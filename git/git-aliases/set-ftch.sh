@@ -6,4 +6,4 @@
 #
 # Copyright (c) 2021, Jeremy Goossen jeremyg995@gmail.com
 
-git config --global alias.ds "diff --word-diff --ignore-space-change --cached"
+git config --global alias.ftch "fetch --prune"
