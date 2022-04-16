@@ -22,13 +22,26 @@ echo
 
 ## APT-GET PACKAGES
 # List of all packages currently installed
-current=$(dpkg --list | awk '{print $2}' | cut --fields=1 --delimiter=":" | sort --unique)
+current=$(\
+    dpkg --list |\
+    awk '{print $2}' |\
+    cut --fields=1 --delimiter=":" |\
+    sort --unique \
+)
 
 # List of all packages that were installed with the system
-pre=$(gzip --decompress --stdout /var/log/installer/initial-status.gz | sed --quiet 's/^Package: //p' | cut --fields=1 --delimiter=":" | sort --unique )
+pre=$(\
+    gzip --decompress --stdout /var/log/installer/initial-status.gz |\
+    sed --quiet 's/^Package: //p' | cut --fields=1 --delimiter=":" |\
+    sort --unique \
+)
 
 # List of packages that don't depend on any other package
-manual=$(apt-mark showmanual | cut --fields=1 --delimiter=":" | sort --unique )
+manual=$(\
+    apt-mark showmanual |\
+    cut --fields=1 --delimiter=":" |\
+    sort --unique \
+)
 
 # (Current - Pre) ∩ (Manual)
 packages=$(comm -12 <(comm -23 <(echo "$current") <(echo "$pre")) <(echo "$manual") )
@@ -49,12 +62,26 @@ done
 
 ## SNAP PACKAGES ##
 # Get currently installed snaps not published by canonical
-packages=$(snap list | tail --lines=+2 | grep --invert-match canonical | awk '{print $1}' | sort --unique)
+packages=$(\
+    snap list |\
+    tail --lines=+2 |\
+    grep --invert-match canonical |\
+    awk '{print $1}' |\
+    sort --unique)
 
 for pack in $packages; do
     packname=$(echo $pack | cut --fields=1 --delimiter=":")
-    desc=$(snap info $packname | grep "summary:" | sed --regexp-extended 's/summary:\s*(.*)/\1/')
-    date=$(snap info --abs-time $packname | grep "refresh-date:" | sed --regexp-extended 's/refresh-date:\s*(.*)/\1/' | date --file -)
+    desc=$(\
+        snap info $packname |\
+        grep "summary:" |\
+        sed --regexp-extended 's/summary:\s*(.*)/\1/' \
+    )
+    date=$(\
+        snap info --abs-time $packname |\
+        grep "refresh-date:" |\
+        sed --regexp-extended 's/refresh-date:\s*(.*)/\1/' |\
+        date --file - \
+    )
     
     # Print leader line, package description, and date
     printf '\e[2m%*s\e[0m' "${COLUMNS:-$(tput cols)}" '' | tr ' ' .
