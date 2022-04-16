@@ -1,0 +1,10 @@
+<!--
+Inspired by Robert Elder
+https://blog.robertelder.org/custom-mime-type-ubuntu/
+-->
+<svg height="128" width="128">
+  <ellipse cx="39" cy="39" rx="39" ry="39" style="fill:brown" />
+  <ellipse cx="89" cy="39" rx="39" ry="39" style="fill:orange" />
+  <ellipse cx="89" cy="89" rx="39" ry="39" style="fill:gold" />
+  <ellipse cx="39" cy="89" rx="39" ry="39" style="fill:olive" />
+</svg>
