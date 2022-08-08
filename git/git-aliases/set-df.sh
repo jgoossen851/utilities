@@ -7,3 +7,4 @@
 # Copyright (c) 2021, Jeremy Goossen jeremyg995@gmail.com
 
 git config --global alias.df "diff --word-diff --ignore-space-change"
+git config --global alias.on "diff --word-diff --ignore-space-change"

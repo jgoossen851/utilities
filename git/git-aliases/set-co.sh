@@ -7,3 +7,4 @@
 # Copyright (c) 2021, Jeremy Goossen jeremyg995@gmail.com
 
 git config --global alias.co "checkout"
+git config --global alias.to "checkout"
