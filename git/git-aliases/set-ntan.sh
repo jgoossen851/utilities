@@ -6,5 +6,5 @@
 #
 # Copyright (c) 2021, Jeremy Goossen jeremyg995@gmail.com
 
-# eNTer commit with message
-git config --global alias.nt "commit -m"
+# eNTer commit -- Amend, No edit
+git config --global alias.ntan "commit --amend --no-edit"
