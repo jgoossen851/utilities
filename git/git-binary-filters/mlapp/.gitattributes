@@ -1,0 +1,48 @@
+### Register Binary Files with Git ###
+
+# Add images
+*.png binary
+*.jpg binary
+*.JPG filter=lfs diff=lfs merge=lfs -text
+*.bmp filter=lfs diff=lfs merge=lfs -text
+*.gif filter=lfs diff=lfs merge=lfs -text
+
+# Add Microsoft file formats
+# (Allow Git to process text diffs for Microsoft Word formats)
+*.docx -text
+*.doc  -text
+*.xlsx binary
+*.xls  filter=lfs diff=lfs merge=lfs -text
+*.pptx filter=lfs diff=lfs merge=lfs -text
+
+# Add binary files and executables
+*.bin filter=lfs diff=lfs merge=lfs -text
+*.dat filter=lfs diff=lfs merge=lfs -text
+*.exe binary
+
+# Add compressed archives
+*.zip filter=lfs diff=lfs merge=lfs -text
+
+# Add binary MATLAB files
+# See https://www.mathworks.com/help/matlab/matlab_prog/set-up-git-source-control.html#buhx2d6-1_3
+# Edited from $MATLABROOT/toolbox/shared/cmlink/git/auxiliary_files/mwgitattributes
+*.fig       filter=lfs diff=lfs merge=lfs -text
+*.mat       filter=lfs diff=lfs merge=lfs -text
+*.mdl       filter=lfs diff=lfs merge=lfs -text
+*.mdlp      filter=lfs diff=lfs merge=lfs -text
+*.mexa64    filter=lfs diff=lfs merge=lfs -text
+*.mexw64    filter=lfs diff=lfs merge=lfs -text
+*.mexmaci64 filter=lfs diff=lfs merge=lfs -text
+*.mlapp     filter=compressed
+*.mldatx    filter=lfs diff=lfs merge=lfs -text
+*.mlproj    filter=lfs diff=lfs merge=lfs -text
+*.mlx       filter=lfs diff=lfs merge=lfs -text
+*.p         filter=lfs diff=lfs merge=lfs -text
+*.sfx       filter=lfs diff=lfs merge=lfs -text
+*.sldd      filter=lfs diff=lfs merge=lfs -text
+*.slreqx    filter=lfs diff=lfs merge=lfs -text
+*.slmx      filter=lfs diff=lfs merge=lfs -text
+*.sltx      filter=lfs diff=lfs merge=lfs -text
+*.slxc      filter=lfs diff=lfs merge=lfs -text
+*.slx       binary merge=mlAutoMerge
+*.slxp      filter=lfs diff=lfs merge=lfs -text
