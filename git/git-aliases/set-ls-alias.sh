@@ -6,6 +6,7 @@
 #
 # Copyright (c) 2022, Jeremy Goossen jeremyg995@gmail.com
 
-git config --global alias.list-ignored '!f() { : git check-ignore ; \
-        git check-ignore --verbose $( git status --ignored --untracked-files=all --porcelain | grep '"'"'!!\s'"'"' | cut -c4- ); \
+ALIAS="$(echo "${0}" | sed -E 's|^.*set-([^/]*).sh$|\1|')"
+git config --global alias."${ALIAS}" '!f() { : git config ; \
+        git config "$@" --get-regexp alias* ; \
     }; f'
