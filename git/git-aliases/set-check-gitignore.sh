@@ -10,10 +10,13 @@
 ALIAS="$(echo "${0}" | sed -E 's|^.*set-([^/]*).sh$|\1|')"
 
 git config --global alias."${ALIAS}" '!f() { : git check-ignore ; \
+    OLD_IFS="${IFS}"
+    IFS=$'"'"'\n'"'"'
+    IGNORED_FILES=($( git clean --dry-run -dX | sed '"'"'s/Would remove //'"'"' ))
+    IGNORED_TRACKED=($( git ls-files -i --exclude-standard ))
+    IFS=${OLD_IFS}
     echo -e "Ignored files and directories:\n"
-    git check-ignore --verbose $( git clean --dry-run -dX | sed '"'"'s/Would remove //'"'"' ) | \
-      column -t ; \
+    git check-ignore --verbose . "${IGNORED_FILES[@]}" ; \
     echo -e "\nTracked files matching an ignore pattern:\n" ;
-    git check-ignore --no-index --verbose $( git ls-files -i --exclude-standard ) | \
-      column -t ;
+    git check-ignore --no-index --verbose . "${IGNORED_TRACKED[@]}" ;
   }; f'
