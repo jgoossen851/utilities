@@ -9,10 +9,10 @@
 git config --global alias.lg '!f() { : git log ; \
         LOG_LINE_LENGTH=$((`tput cols`-25)); \
         FORMAT_STRING='"'"'%C(yellow)%h%Creset %C(bold blue)<%an>%Creset %C(auto)%d%Creset %<|('"'"'$LOG_LINE_LENGTH'"'"',trunc) %s %Cgreen(%cr)'"'"'; \
-        git log --graph --abbrev-commit --date=relative --max-count=35 --pretty=format:"$FORMAT_STRING" "$@" --all; \
+        git log --graph --abbrev-commit --date=relative --max-count=35 --pretty=format:"$FORMAT_STRING" --date-order "$@" --all; \
     }; f'
 git config --global alias.ed '!f() { : git log ; \
         LOG_LINE_LENGTH=$((`tput cols`-25)); \
         FORMAT_STRING='"'"'%C(yellow)%h%Creset %C(bold blue)<%an>%Creset %C(auto)%d%Creset %<|('"'"'$LOG_LINE_LENGTH'"'"',trunc) %s %Cgreen(%cr)'"'"'; \
-        git log --graph --abbrev-commit --date=relative --max-count=35 --pretty=format:"$FORMAT_STRING" "$@" --all; \
+        git log --graph --abbrev-commit --date=relative --max-count=35 --pretty=format:"$FORMAT_STRING" --topo-order "$@" --all; \
     }; f'
