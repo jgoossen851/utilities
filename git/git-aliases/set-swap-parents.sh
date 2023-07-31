@@ -7,5 +7,5 @@
 # Copyright (c) 2023, Jeremy Goossen jeremyg995@gmail.com
 
 git config --global alias.swap-parents '!f() { : git reset ; \
-        git reset --soft $(git show --format=\"%B\" HEAD | git commit-tree -p HEAD^2 -p HEAD^1 \"HEAD^{tree}\") "$@"; \
+        git reset --soft $(git show --format="%B" HEAD | git commit-tree -p HEAD^2 -p HEAD^1 "HEAD^{tree}") "$@"; \
     }; f'
