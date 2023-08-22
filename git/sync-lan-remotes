@@ -1,0 +1,78 @@
+#!/bin/bash
+
+function usage () {
+  cat << EOF
+Sync local Git remotes with their true remote counterparts.
+Local remotes are searched for in the directory $(bold "${LOCAL_GIT_REMOTES}"),
+which is expected to contain several project subdirectories, each
+containing its related bare Git repositories.
+
+For example, for the projects \`foo\` and \`qux\`,
+  ${LOCAL_GIT_REMOTES}/foo/bar.git
+  ${LOCAL_GIT_REMOTES}/foo/baz.git
+  ${LOCAL_GIT_REMOTES}/qux/xyzzy.git
+  ${LOCAL_GIT_REMOTES}/qux/plugh.git
+
+Each of these bare repositories will pull all branches from their remote
+named $(bold "${ORIGIN}"), and then subsequently push all branches to any remotes matching
+the regex $(bold "${LAN_REGEX}").
+
+Usage:  ${BASH_SOURCE[0]}
+EOF
+}
+
+function bold () {
+  echo -en "\e[1m${*}\e[0m"
+}
+
+# Configuration
+LOCAL_GIT_REMOTES="${HOME}/.remotes"
+ORIGIN="origin"
+LAN_REGEX="lan-.*"
+
+if [ ! ${#} -eq 0 ]; then
+  usage
+  exit 0
+fi
+
+
+pushd "${LOCAL_GIT_REMOTES}" >/dev/null || exit 1
+
+# Iterate through project directories
+for DIR in *; do
+  [[ -d "${DIR}" ]] || break # Skip any non-directories
+  pushd "${DIR}" >/dev/null || exit 1
+
+  # Iterate through bare repositories
+  for REPO in *; do
+    [[ -d "${REPO}" ]] || break # Skip any non-directories
+    [[ "${REPO}" =~ ^.+\.git$ ]] || break # Skip any directories not named *.git
+    pushd "${REPO}" >/dev/null || exit 1
+
+    echo -e "\e[32m${REPO}\e[0m"
+
+    # Fill array with all remote names present in repo
+    mapfile -t ALL_REMOTES < <( git remote -v | cut -f 1 | sort -u )
+
+    if printf '%s\0' "${ALL_REMOTES[@]}" | grep -Fxzq -- "${ORIGIN}"; then
+      # Repo has remote named ${ORIGIN}
+      echo -e "\e[33mPulling from ${ORIGIN}\e[0m"
+      git fetch origin || exit 1
+    fi
+
+    # Fill array with all remote names matching LAN Regex
+    mapfile -t ALL_LAN_REMOTES < <( printf '%s\0' "${ALL_REMOTES[@]}" | grep -xz -- "${LAN_REGEX}" )
+    for LAN_REMOTE in "${ALL_LAN_REMOTES[@]}"; do
+      echo -e "\e[33mPushing to ${LAN_REMOTE}\e[0m"
+      git push --all "${LAN_REMOTE}"
+    done
+
+    popd >/dev/null || exit 1
+
+  done
+  
+  popd >/dev/null || exit 1
+
+done
+
+popd >/dev/null || exit 1
