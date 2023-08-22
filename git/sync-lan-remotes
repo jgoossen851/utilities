@@ -61,10 +61,10 @@ for DIR in *; do
     fi
 
     # Fill array with all remote names matching LAN Regex
-    mapfile -t ALL_LAN_REMOTES < <( printf '%s\0' "${ALL_REMOTES[@]}" | grep -xz -- "${LAN_REGEX}" )
+    mapfile -t ALL_LAN_REMOTES < <( printf '%s\n' "${ALL_REMOTES[@]}" | grep -x -- "${LAN_REGEX}" )
     for LAN_REMOTE in "${ALL_LAN_REMOTES[@]}"; do
       echo -e "\e[33mPushing to ${LAN_REMOTE}\e[0m"
-      git push --all "${LAN_REMOTE}"
+      git push --all "${LAN_REMOTE}" || exit 1
     done
 
     popd >/dev/null || exit 1
