@@ -17,6 +17,14 @@ Each of these bare repositories will pull all branches from their remote
 named $(bold "${ORIGIN}"), and then subsequently push all branches to any remotes matching
 the regex $(bold "${LAN_REGEX}").
 
+If a LAN repository does not yet exist, it will first need to be created on the
+other computer before this script can push to it. In general, the process is as
+follows:
+  mkdir -p "\${REPO_PATH}"
+  cd \$_
+  git init
+  git checkout -b "bare_"  # To prevent errors when pushing to master branch
+
 Usage:  ${BASH_SOURCE[0]}
 EOF
 }
