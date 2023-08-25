@@ -70,7 +70,7 @@ for DIR in *; do
     if printf '%s\0' "${ALL_REMOTES[@]}" | grep -Fxzq -- "${ORIGIN}"; then
       # Repo has remote named ${ORIGIN}
       echo -e "\e[33mPulling from ${ORIGIN}\e[0m"
-      git fetch origin || exit 1
+      git remote update || exit 1
     fi
 
     # Fill array with all remote names matching LAN Regex
