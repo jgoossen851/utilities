@@ -25,6 +25,11 @@ follows:
   git init
   git checkout -b "bare_"  # To prevent errors when pushing to master branch
 
+When cloning from a local remote in this way, Git by default issues the error:
+  fatal: transport 'file' not allowed
+To fix this, run the following command to always allow the file protocol:
+  git config --global protocol.file.allow always
+
 Usage:  ${BASH_SOURCE[0]}
 EOF
 }
