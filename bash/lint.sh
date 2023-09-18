@@ -25,7 +25,12 @@ while read -r FILE; do
   # Only the last matching occurance per line will be replaced.
   QUOTE_RX="[\"'][^\"']*[\"']" # Matches any two quote characters and all characters between them
   NQ_RX="[^\"']*?" # Matches (non-greedy) anything except a quote character
+  COMMENT_SPACE_RX="s/^((${NQ_RX}${QUOTE_RX})*?${NQ_RX}${CMT}+)\s?/\1 /"
+
+  # Remove a trailing space from each line
+  TRAILING_SPACE_RX="s/\s+$//"
+
   SKIP_PATTERNS="(http|#!\/)" # Skip lines if these patterns found
-  sed -i -E "/${SKIP_PATTERNS}/n; s/^((${NQ_RX}${QUOTE_RX})*?${NQ_RX}${CMT}+)\s?/\1 /" "${FILE}"
+  sed -i -E "${TRAILING_SPACE_RX}; /${SKIP_PATTERNS}/n; ${COMMENT_SPACE_RX}" "${FILE}"
 
 done < <(git ls-files)
