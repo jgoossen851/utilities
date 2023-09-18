@@ -42,4 +42,9 @@ while read -r FILE; do
   SKIP_PATTERNS="(nolint|http|#!\/)" # Skip lines if these patterns found
   sed -i -E "${TABS_TO_SPC_RX}; ${TRAILING_SPACE_RX}; /${SKIP_PATTERNS}/n; ${COMMA_SPACE_RX}; ${COMMENT_SPACE_RX}; ${FINAL_NEWLINE_RX}" "${FILE}"
 
+  if [[ "${OSTYPE}" == "msys" ]]; then
+    # Restore line-endings on Windows
+    unix2dos -q "${FILE}"
+  fi
+
 done < <(git ls-files)
