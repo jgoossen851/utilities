@@ -36,7 +36,10 @@ while read -r FILE; do
   # Convert tabs to spaces
   TABS_TO_SPC_RX="s/\t/  /g"
 
+  # Ensure all files end with a final newline
+  FINAL_NEWLINE_RX='$a\' # (Append nothing to end of line, adding missing newlines in the process)
+
   SKIP_PATTERNS="(nolint|http|#!\/)" # Skip lines if these patterns found
-  sed -i -E "${TABS_TO_SPC_RX}; ${TRAILING_SPACE_RX}; /${SKIP_PATTERNS}/n; ${COMMA_SPACE_RX}; ${COMMENT_SPACE_RX}" "${FILE}"
+  sed -i -E "${TABS_TO_SPC_RX}; ${TRAILING_SPACE_RX}; /${SKIP_PATTERNS}/n; ${COMMA_SPACE_RX}; ${COMMENT_SPACE_RX}; ${FINAL_NEWLINE_RX}" "${FILE}"
 
 done < <(git ls-files)
