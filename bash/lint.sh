@@ -27,13 +27,16 @@ while read -r FILE; do
   NQ_RX="[^\"']*?" # Matches (non-greedy) anything except a quote character
   COMMENT_SPACE_RX="s/^((${NQ_RX}${QUOTE_RX})*?${NQ_RX}${CMT}+)\s?/\1 /"
 
+  # Add single space after commas for better readability
+  COMMA_SPACE_RX="s/,\s*/, /g" # nolint
+
   # Remove a trailing space from each line
   TRAILING_SPACE_RX="s/\s+$//"
 
   # Convert tabs to spaces
   TABS_TO_SPC_RX="s/\t/  /g"
 
-  SKIP_PATTERNS="(http|#!\/)" # Skip lines if these patterns found
-  sed -i -E "${TABS_TO_SPC_RX}; ${TRAILING_SPACE_RX}; /${SKIP_PATTERNS}/n; ${COMMENT_SPACE_RX}" "${FILE}"
+  SKIP_PATTERNS="(nolint|http|#!\/)" # Skip lines if these patterns found
+  sed -i -E "${TABS_TO_SPC_RX}; ${TRAILING_SPACE_RX}; /${SKIP_PATTERNS}/n; ${COMMA_SPACE_RX}; ${COMMENT_SPACE_RX}" "${FILE}"
 
 done < <(git ls-files)
