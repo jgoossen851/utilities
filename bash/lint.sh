@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Run this script in a Git directory to run linter on all files tracked by Git
+
+# ANSI Escape Codes
+CLEAR_LINE="\e[1G\e[2K" # Cursor to column 1 and clear entire line
+
 while read -r FILE; do
 
   EXT="${FILE##*.}"
@@ -16,7 +21,9 @@ while read -r FILE; do
         continue ;;
   esac
 
-  echo "Processing ${FILE}"
+  # Display Status
+  echo -en "${CLEAR_LINE}Processing ${FILE}"
+
   # Add a single space after any comment character, $CMT
   # Regex ensures that an even number of quote characters (' or ") appear before
   # the comment character, such that these comment characters are not formatted
@@ -48,3 +55,5 @@ while read -r FILE; do
   fi
 
 done < <(git ls-files)
+
+echo # Final newline after status output
