@@ -52,7 +52,10 @@ while read -r FILE; do
   FINAL_NEWLINE_RX='$a\' # (Append nothing to end of line, adding missing newlines in the process)
 
   # Run the SED command - whitespace is processed before Skip Patterns are read
-  sed -i -E "${TABS_TO_SPC_RX}; ${TRAILING_SPACE_RX}; /${SKIP_PATTERNS}/n; ${COMMA_SPACE_RX}; ${COMMENT_SPACE_RX}; ${FINAL_NEWLINE_RX}" "${FILE}"
+  # Trailing Spaces are matched twice - once before any patterns trigger the
+  # rest of the expression to be skipped, and once at the end to remove spaces
+  # added after comments and commas.
+  sed -i -E "${TABS_TO_SPC_RX}; ${TRAILING_SPACE_RX}; /${SKIP_PATTERNS}/n; ${COMMA_SPACE_RX}; ${COMMENT_SPACE_RX}; ${TRAILING_SPACE_RX}; ${FINAL_NEWLINE_RX}" "${FILE}"
 
   if [[ "${OSTYPE}" == "msys" ]]; then
     # Restore line-endings on Windows
