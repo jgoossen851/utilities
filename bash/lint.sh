@@ -2,13 +2,18 @@
 
 # Run this script in a Git directory to run linter on all files tracked by Git
 
+# Linter will not run textual replacement on any line containing a pattern
+# listed below, though whitespace may still be formatted.
+SKIP_PATTERNS="(nolint|http|#!\/)" # Skip lines if these patterns found
+
 # ANSI Escape Codes
 CLEAR_LINE="\e[1G\e[2K" # Cursor to column 1 and clear entire line
 
 while read -r FILE; do
 
-  EXT="${FILE##*.}"
-
+  # Parse file extension, defining language-specific syntax and skipping any
+  # unknown file extensions
+  EXT="${FILE##*.}" # Strip everything before the last period, inclusive
   case "${EXT}" in
     gitignore | py | sh)
         CMT="#"
@@ -21,10 +26,10 @@ while read -r FILE; do
         continue ;;
   esac
 
-  # Display Status
+  # Display Status if file extension is known
   echo -en "${CLEAR_LINE}Processing ${FILE}"
 
-  # Add a single space after any comment character, $CMT
+  # Add a single space after any (unquoted) comment character, $CMT
   # Regex ensures that an even number of quote characters (' or ") appear before
   # the comment character, such that these comment characters are not formatted
   # within quoted strings. (No distiction is made between ' and ". A line with
@@ -34,19 +39,19 @@ while read -r FILE; do
   NQ_RX="[^\"']*?" # Matches (non-greedy) anything except a quote character
   COMMENT_SPACE_RX="s/^((${NQ_RX}${QUOTE_RX})*?${NQ_RX}${CMT}+)\s?/\1 /"
 
-  # Add single space after commas for better readability
+  # Add single space after all commas for better readability
   COMMA_SPACE_RX="s/,\s*/, /g" # nolint
 
-  # Remove a trailing space from each line
+  # Remove any trailing space from each line (cannot be skipped)
   TRAILING_SPACE_RX="s/\s+$//"
 
-  # Convert tabs to spaces
+  # Convert all tabs to 2 spaces (cannot be skipped)
   TABS_TO_SPC_RX="s/\t/  /g"
 
   # Ensure all files end with a final newline
   FINAL_NEWLINE_RX='$a\' # (Append nothing to end of line, adding missing newlines in the process)
 
-  SKIP_PATTERNS="(nolint|http|#!\/)" # Skip lines if these patterns found
+  # Run the SED command - whitespace is processed before Skip Patterns are read
   sed -i -E "${TABS_TO_SPC_RX}; ${TRAILING_SPACE_RX}; /${SKIP_PATTERNS}/n; ${COMMA_SPACE_RX}; ${COMMENT_SPACE_RX}; ${FINAL_NEWLINE_RX}" "${FILE}"
 
   if [[ "${OSTYPE}" == "msys" ]]; then
