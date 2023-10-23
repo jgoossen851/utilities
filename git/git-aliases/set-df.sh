@@ -11,3 +11,13 @@ git config --global alias.df "diff --word-diff --ignore-space-change"
 # Divide words on the following punctuation in addition to spaces:
 #   , ; : + = ' " & | -
 git config --global alias.on 'diff --color-words="[^[:space:],;:\\+=\\'\''\\\"&|-]+|[^[:space:]+]" --ignore-space-change'
+
+git config --global color.diff.meta "magenta"
+git config --global color.diff.func "bold"
+git config --global color.diff.old "reverse dim red red"
+git config --global color.diff.new "reverse dim green green"
+git config --global color.diff.whitespace "reverse bold red red"
+git config --global color.diff.oldMoved "dim cyan"
+git config --global color.diff.newMoved "bold cyan"
+git config --global color.diff.oldMovedAlternative "dim yellow"
+git config --global color.diff.newMovedAlternative "bold yellow"
