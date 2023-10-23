@@ -7,4 +7,7 @@
 # Copyright (c) 2021, Jeremy Goossen jeremyg995@gmail.com
 
 git config --global alias.df "diff --word-diff --ignore-space-change"
-git config --global alias.on "diff --word-diff --ignore-space-change"
+
+# Divide words on the following punctuation in addition to spaces:
+#   , ; : + = ' " & | -
+git config --global alias.on 'diff --color-words="[^[:space:],;:\\+=\\'\''\\\"&|-]+|[^[:space:]+]" --ignore-space-change'
