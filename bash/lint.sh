@@ -22,12 +22,15 @@ while read -r FILE; do
   EXT="${FILE##*.}" # Strip everything before the last period, inclusive
   case "${EXT}" in
     gitignore | py | sh)
+        LANG="Various"
         CMT="#"
         ;;
     m)
+        LANG="Matlab"
         CMT="%"
         ;;
     *)
+        LANG="Unknown"
         CMT=""
         continue ;;
   esac
@@ -45,8 +48,13 @@ while read -r FILE; do
   NQ_RX="[^\"']*?" # Matches (non-greedy) anything except a quote character
   COMMENT_SPACE_RX="s/^((${NQ_RX}${QUOTE_RX})*?${NQ_RX}${CMT}+)\s?/\1 /"
 
-  # Add single space after all commas for better readability
-  COMMA_SPACE_RX="s/,\s*/, /g" # nolint
+  # Add single space after all commas (and semicolons in MATLAB) for better
+  # readability
+  if [[ "${LANG}" == "Matlab" ]]; then
+    COMMA_SPACE_RX="s/([,;])\s*/\1 /g" # nolint
+  else
+    COMMA_SPACE_RX="s/,\s*/, /g" # nolint
+  fi
 
   # Remove any trailing space from each line (cannot be skipped)
   TRAILING_SPACE_RX="s/\s+$//"
