@@ -8,10 +8,9 @@ function display () {
 
 
 # ### Testing output
-# display "Test *Bold* _Ita!*lic_ |Underlined| #dim# @inverse@ ~striked~ {3;text}"
-# display "Test *Bold and _Italic_ |Under*lined| #dim @i~nv#erse@ st*riked~ tex*t"
-# display "{1;Critical *Error*:} #This _is_ an ~error~.# |{3;_You_} [4;*should] @fix@ it|"
-
+# display "Test **Bold** __Ita!*lic__ ||Underlined|| ##dim## @@inverse@@ ~~striked~~ {3;text}"
+# display "Test **Bold and __Italic__ ||Under**lined|| ##dim @@i~~nv##erse@@ st**riked~~ tex**t"
+# display "{1;Critical **Error**:} ##This __is__ an ~~error~~.## ||{3;__You__} [4;**should] @@fix@@ it||"
 
 ### Previous implementations
 
