@@ -1,0 +1,13 @@
+# Sample Text for General Purpose Macro Processor (gpmp.sh)
+
+Hello World
+#shell FOO=bar
+Text ${FOO} word
+End
+
+# Test a simple for loop with floating point calculations
+#shell BAZ=10
+#shell for VAR in $(seq 1 10); do
+#calc  %.4f  BAZ_IN_N  ${BAZ} / ${VAR}
+Limit ${BAZ_IN_N} steps. (i.e., ${BAZ} / ${VAR})
+#shell done
