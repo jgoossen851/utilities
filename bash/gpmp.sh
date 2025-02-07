@@ -65,10 +65,10 @@ command_mode
 # Debug output: View generated file
 if [ ${DEBUG} -gt 0 ]; then
   1>&2 echo -en "\e[2m"
-  1>&2 cat "${TMP_FILE}" >> "${OUT_FILE}"
+  1>&2 cat "${TMP_FILE}"
   1>&2 echo -en "\e[0m"
 fi
 
 # Use the generated file to produce the processed output
-bash "${TMP_FILE}" >> "${OUT_FILE}"
+bash "${TMP_FILE}" > "${OUT_FILE}"
 rm "${TMP_FILE}"
