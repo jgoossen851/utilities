@@ -1,0 +1,11 @@
+# Sample Text for General Purpose Macro Processor (gpmp.sh)
+
+# File assumes $LIST has been externally defined
+Included File: Executing loop on LIST, defined as
+#shell declare -p LIST
+
+#shell for VAR in ${LIST[@]}; do
+Included file: Current entry is ${VAR}
+#shell done
+
+Included File: Done with list

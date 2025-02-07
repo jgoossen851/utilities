@@ -11,3 +11,13 @@ End
 #calc  %.4f  BAZ_IN_N  ${BAZ} / ${VAR}
 Limit ${BAZ_IN_N} steps. (i.e., ${BAZ} / ${VAR})
 #shell done
+
+# Test including a file
+#shell LIST=(foo bar baz)
+#include include.txt
+#shell LIST=($(seq 1 3))
+#include include.txt
+
+# Test calling a function
+#call foo.txt Hello World Foo Bar Baz
+#call foo.txt A B

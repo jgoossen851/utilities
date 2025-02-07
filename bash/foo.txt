@@ -1,0 +1,8 @@
+# Sample Function for General Purpose Macro Processor (gpmp.sh)
+
+#shell FOO=${ARGS[0]}
+#shell BAR=${ARGS[1]}
+#shell VARGS=("${ARGS[@]:2}")
+
+Inverted Arguments: ${BAR}, ${FOO}
+Unused Arguments: "${VARGS[@]}"
